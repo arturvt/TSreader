@@ -6,7 +6,7 @@
  <class name="br.ufpe.cin.tool.db.dao.Broadcaster" schema="public" table="broadcaster">
   <id name="id" type="int">
    <column name="id"/>
-   <generator class="assigned"/>
+   <generator class="increment"/>
   </id>
   <property generated="never" lazy="false" name="name" type="string">
    <column length="45" name="name"/>

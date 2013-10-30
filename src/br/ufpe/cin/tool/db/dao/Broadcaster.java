@@ -14,7 +14,7 @@ public class Broadcaster implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private int id = 0;
 	private String name;
 	private Integer channel;
 	private String country;
@@ -24,13 +24,13 @@ public class Broadcaster implements java.io.Serializable {
 	public Broadcaster() {
 	}
 
-	public Broadcaster(int id) {
-		this.id = id;
-	}
+//	public Broadcaster(int id) {
+//		this.id = id;
+//	}
 
-	public Broadcaster(int id, String name, Integer channel, String country,
+	public Broadcaster(String name, Integer channel, String country,
 			String language, Set<Program> programs) {
-		this.id = id;
+//		this.id = id;
 		this.name = name;
 		this.channel = channel;
 		this.country = country;

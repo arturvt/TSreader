@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.ufpe.cin.tool.db.DatabaseManager;
@@ -55,16 +54,16 @@ public class BroadcasterHome {
 		}
 	}
 
-	public void attachClean(Broadcaster instance) {
-		log.debug("attaching clean Broadcaster instance");
-		try {
-			sessionFactory.getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
-		} catch (RuntimeException re) {
-			log.error("attach failed", re);
-			throw re;
-		}
-	}
+//	public void attachClean(Broadcaster instance) {
+//		log.debug("attaching clean Broadcaster instance");
+//		try {
+//			sessionFactory.getSession().lock(instance, LockMode.NONE);
+//			log.debug("attach successful");
+//		} catch (RuntimeException re) {
+//			log.error("attach failed", re);
+//			throw re;
+//		}
+//	}
 
 	public void delete(Broadcaster persistentInstance) {
 		log.debug("deleting Broadcaster instance");

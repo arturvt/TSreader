@@ -6,7 +6,7 @@
  <class name="br.ufpe.cin.tool.db.dao.Tweets" schema="public" table="tweets">
   <id name="id" type="int">
    <column name="id"/>
-   <generator class="assigned"/>
+   <generator class="increment"/>
   </id>
   <property generated="never" lazy="false" name="datecreation" type="timestamp">
    <column length="29" name="datecreation"/>

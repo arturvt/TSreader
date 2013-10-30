@@ -17,7 +17,7 @@
         <mapping resource="mappings/Program.hbm.xml"/>
         <mapping resource="mappings/Broadcaster.hbm.xml"/>
         <mapping resource="mappings/Epg.hbm.xml"/>
-       
+        <mapping resource="mappings/EpgEvent.hbm.xml"/>
         <mapping resource="mappings/Terms.hbm.xml"/>
         <mapping resource="mappings/Tweets.hbm.xml"/>
                

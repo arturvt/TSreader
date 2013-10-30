@@ -6,7 +6,7 @@
  <class name="br.ufpe.cin.tool.db.dao.Terms" schema="public" table="terms">
   <id name="id" type="int">
    <column name="id" not-null="true" unique="true" unique-key="id"/>
-   <generator class="assigned"/>
+   <generator class="increment"/>
   </id>
   <property generated="never" lazy="false" name="word" type="string">
    <column length="45" name="word"/>

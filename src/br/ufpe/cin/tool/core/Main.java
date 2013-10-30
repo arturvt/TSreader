@@ -1,114 +1,74 @@
 package br.ufpe.cin.tool.core;
 
+import java.util.List;
+
 import br.ufpe.cin.tool.db.DataBaseFacade;
 import br.ufpe.cin.tool.db.dao.Broadcaster;
-import br.ufpe.cin.tool.db.dao.BroadcasterHome;
+import br.ufpe.cin.tool.db.dao.EpgEvent;
 import br.ufpe.cin.tool.db.dao.Program;
-import br.ufpe.cin.tool.db.dao.Terms;
+import br.ufpe.cin.tool.mpegts.TSChecker;
 
 public class Main {
 
-	private static void createAndStoreEvent(String title) {
+
+	private static void createEpgEvent() {
 		DataBaseFacade session = DataBaseFacade.getInstance();
 		if (session.beginTransaction()) {
 			System.out.println("Go on");
 		} else {
 			return;
 		}
-		Broadcaster broad = new Broadcaster();
-		broad.setChannel(12);
-		broad.setCountry("BRA");
-		broad.setLanguage("por");
-		broad.setName(title);
-		broad.setId(9);
-		session.save(broad);
 
-		Terms term = new Terms(46, "sada", 1);
-		session.save(term);
-		session.commit();
-		session.closeSession();
+		Program prog = session.getProgram("Progsa");
+		if (prog != null) {
+			System.out.println("Program: " + prog.getName());
+
+			EpgEvent event = new EpgEvent();
+			event.setStartdate("30/10/2013");
+			event.setStarttime("13:00:00");
+			event.setDurationtime("00:45:00");
+			event.setDescriptor("Programa diário do Ratinho");
+			event.setProgram(prog);
+			session.save(event);
+			session.commit();
+			session.closeSession();
+		} else {
+			System.out.println("Program not found!");
+		}
 	}
-
-	private static void listBroadcasters() {
+	
+	public static void listProgramsByBroadCaster() {
 		DataBaseFacade session = DataBaseFacade.getInstance();
 		if (session.beginTransaction()) {
 			System.out.println("Go on");
 		} else {
 			return;
 		}
-
-		session.listBroadcasters();
-		session.closeSession();
-	}
-
-	private static void getBroadCaster(int id) {
-		DataBaseFacade session = DataBaseFacade.getInstance();
-		if (session.beginTransaction()) {
-			System.out.println("Go on");
-		} else {
-			return;
-		}
-
-		BroadcasterHome bro = new BroadcasterHome();
-		Broadcaster foundBro = bro.findById(id);
-
-		if (foundBro != null) {
-			System.out.println("Bro: " + foundBro.getName());
-		}
-
-		session.closeSession();
-	}
-
-	private static void getByName(String name) {
-		DataBaseFacade session = DataBaseFacade.getInstance();
-		if (session.beginTransaction()) {
-			System.out.println("Go on");
-		} else {
-			return;
-		}
-
-		Broadcaster bro = session.getBroadCaster(name);
-		if ( bro != null) {
-			System.out.println("Found! Listing attached programs...");
-			for (Program programs:bro.getPrograms()) {
-				System.out.println(programs.getName());
+		
+		List<Broadcaster> list = session.getAllBroadCasters();
+		for (Broadcaster bro:list) {
+			System.out.println("Broadcaster: "+bro.getName());
+			System.out.println(" --- Programs ----");
+			for (Program prog:bro.getPrograms()) {
+				System.out.println("-> "+prog.getName());
 			}
 		}
-		session.closeSession();
-	}
-
-	private static void insertProgram(String broadcaster, String program) {
-		DataBaseFacade session = DataBaseFacade.getInstance();
-		if (session.beginTransaction()) {
-			System.out.println("Go on");
-		} else {
-			return;
-		}
-
-		Program prog = new Program();
-		Broadcaster tempBro = session.getBroadCaster(broadcaster);
-		if (tempBro != null) {
-			prog.setBroadcaster(tempBro);
-			prog.setName(program);
-			prog.setId(4);
-			session.save(prog);
-			session.commit();
-		} else {
-			System.out.println("No broadcaster found");
-		}
+		
 		session.closeSession();
 	}
 
 	public static void main(String[] args) {
-		// createAndStoreEvent("Manchete");
-		String broadCasterName = "GLOBO";
-		getByName(broadCasterName);
-		listBroadcasters();
-		insertProgram(broadCasterName, "Video Show");
-		// DataBaseManager_working.startConnection();
-		// TSChecker tsChecker = TSChecker.getInstance();
-		// tsChecker.loadTS("D:\\TSs\\TSS\\Globo_SP-20100921_1sWithPAT.ts",
-		// "Globo");
+
+		TSChecker tsChecker = TSChecker.getInstance();
+		System.out.println("Globo");
+		tsChecker.loadTS("D:\\TSs\\TSS\\Globo-2013-10-28-23h29m49s-Tela Quente.ts","Globo");
+		EPGConstructor.readEPGList("Globo", 13, tsChecker.getEPGList());
+
+		tsChecker.loadTS("D:\\TSs\\TSS\\SBT-2013-10-28-22h40m44#Programa do Ratinho.ts","SBT");
+		EPGConstructor.readEPGList("SBT", 2, tsChecker.getEPGList());
+
+		listProgramsByBroadCaster();
+		
 		// tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2011-10-21-10h46m09s-dvb-t___frequency=701000000-Onde Deus Chora.ts",
 		// "RedeVida");
 		// tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2011-10-21-10h30m52s-dvb-t___frequency=605000000-Bem Estar.ts",

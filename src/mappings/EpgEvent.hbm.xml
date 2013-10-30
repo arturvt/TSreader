@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 30, 2013 5:03:56 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="br.ufpe.cin.tool.db.dao.EpgEvent" table="epg_event" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="program" class="br.ufpe.cin.tool.db.dao.Program" fetch="select">
+            <column name="program" not-null="true" />
+        </many-to-one>
+        <property name="descriptor" type="string">
+            <column name="descriptor" length="500" />
+        </property>
+        <property name="startdate" type="string">
+            <column name="startdate" length="10" />
+        </property>
+        <property name="starttime" type="string">
+            <column name="starttime" length="10" />
+        </property>
+        <property name="durationtime" type="string">
+            <column name="durationtime" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

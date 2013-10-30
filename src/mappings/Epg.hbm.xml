@@ -6,7 +6,7 @@
     <class name="br.ufpe.cin.tool.db.dao.Epg" table="epg" schema="public">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="country" type="string">
             <column name="country" length="10" />

@@ -1,9 +1,13 @@
 package br.ufpe.cin.tool.db;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import br.ufpe.cin.tool.db.dao.Broadcaster;
 import br.ufpe.cin.tool.db.dao.BroadcasterHome;
+import br.ufpe.cin.tool.db.dao.EpgEvent;
+import br.ufpe.cin.tool.db.dao.EpgEventHome;
 import br.ufpe.cin.tool.db.dao.Program;
 import br.ufpe.cin.tool.db.dao.ProgramHome;
 import br.ufpe.cin.tool.db.dao.Terms;
@@ -17,12 +21,14 @@ public class DataBaseFacade {
 	private BroadcasterHome broadCasterDAO = null;
 	private TermsHome termsDAO = null;
 	private ProgramHome programsDAO = null;
+	private EpgEventHome epgEventDAO = null;
 	
 	public DataBaseFacade() {
 		dataBaseManager = DatabaseManager.getInstance();
 		broadCasterDAO = new BroadcasterHome();
 		termsDAO = new TermsHome();
 		programsDAO = new ProgramHome();
+		epgEventDAO = new EpgEventHome();
 	}
 	
 	private static DataBaseFacade instance = null;
@@ -69,7 +75,10 @@ public class DataBaseFacade {
 	// *********************
 	// Save Methods
 	// *********************
-	public void save(Broadcaster broadCaster) {
+	public void save (EpgEvent event) {
+		epgEventDAO.attachDirty(event);
+	}
+ 	public void save(Broadcaster broadCaster) {
 		broadCasterDAO.attachDirty(broadCaster);
 	}
 	
@@ -80,6 +89,15 @@ public class DataBaseFacade {
 	public void save(Program prog) {
 		programsDAO.attachDirty(prog);
 	}
+	
+	// *********************
+	// Get by All itens from something
+	// *********************
+		
+	public List<Broadcaster> getAllBroadCasters() {
+		return broadCasterDAO.getALL();
+	}
+	
 	// *********************
 	// Get by Name methods
 	// *********************
@@ -98,6 +116,11 @@ public class DataBaseFacade {
 		for (Broadcaster bro : broadCasterDAO.getALL()) {
 			System.out.println("Name: "+bro.getName());
 		}
+	}
+
+	public EpgEvent getEPGEvent(String startDate, String startTime,
+			String operador) {
+		return epgEventDAO.findByDateTimeOperator(startDate, startTime, operador);
 	}
 
 
