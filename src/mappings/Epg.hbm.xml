@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 29, 2013 10:54:13 AM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="br.ufpe.cin.tool.db.dao.Epg" table="epg" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="country" type="string">
+            <column name="country" length="10" />
+        </property>
+        <property name="datestart" type="string">
+            <column name="datestart" length="10" />
+        </property>
+        <property name="timestart" type="string">
+            <column name="timestart" length="10" />
+        </property>
+        <property name="duration" type="string">
+            <column name="duration" length="35" />
+        </property>
+        <property name="channelName" type="string">
+            <column name="channel_name" length="45" />
+        </property>
+        <property name="programName" type="string">
+            <column name="program_name" length="100" />
+        </property>
+        <property name="descriptor" type="string">
+            <column name="descriptor" length="600" />
+        </property>
+    </class>
+</hibernate-mapping>

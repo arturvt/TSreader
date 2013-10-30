@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 29, 2013 10:54:13 AM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+ <class name="br.ufpe.cin.tool.db.dao.Broadcaster" schema="public" table="broadcaster">
+  <id name="id" type="int">
+   <column name="id"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="name" type="string">
+   <column length="45" name="name"/>
+  </property>
+  <property generated="never" lazy="false" name="channel" type="java.lang.Integer">
+   <column name="channel"/>
+  </property>
+  <property generated="never" lazy="false" name="country" type="string">
+   <column length="10" name="country"/>
+  </property>
+  <property generated="never" lazy="false" name="language" type="string">
+   <column length="5" name="language"/>
+  </property>
+  <set fetch="select" inverse="true" lazy="true" name="programs"
+   sort="unsorted" table="program">
+   <key>
+    <column name="broadcaster" not-null="true"/>
+   </key>
+   <one-to-many class="br.ufpe.cin.tool.db.dao.Program"/>
+  </set>
+ </class>
+</hibernate-mapping>
