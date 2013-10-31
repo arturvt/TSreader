@@ -4,38 +4,12 @@ import java.util.List;
 
 import br.ufpe.cin.tool.db.DataBaseFacade;
 import br.ufpe.cin.tool.db.dao.Broadcaster;
-import br.ufpe.cin.tool.db.dao.EpgEvent;
 import br.ufpe.cin.tool.db.dao.Program;
 import br.ufpe.cin.tool.mpegts.TSChecker;
 
 public class Main {
 
 
-	private static void createEpgEvent() {
-		DataBaseFacade session = DataBaseFacade.getInstance();
-		if (session.beginTransaction()) {
-			System.out.println("Go on");
-		} else {
-			return;
-		}
-
-		Program prog = session.getProgram("Progsa");
-		if (prog != null) {
-			System.out.println("Program: " + prog.getName());
-
-			EpgEvent event = new EpgEvent();
-			event.setStartdate("30/10/2013");
-			event.setStarttime("13:00:00");
-			event.setDurationtime("00:45:00");
-			event.setDescriptor("Programa diário do Ratinho");
-			event.setProgram(prog);
-			session.save(event);
-			session.commit();
-			session.closeSession();
-		} else {
-			System.out.println("Program not found!");
-		}
-	}
 	
 	public static void listProgramsByBroadCaster() {
 		DataBaseFacade session = DataBaseFacade.getInstance();
@@ -61,10 +35,13 @@ public class Main {
 
 		TSChecker tsChecker = TSChecker.getInstance();
 		System.out.println("Globo");
-		tsChecker.loadTS("D:\\TSs\\TSS\\Globo-2013-10-28-23h29m49s-Tela Quente.ts","Globo");
+		tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2013-10-30-23h44m21s-dvb-t___frequency=605143000-Programa do Jo.ts","Globo");
 		EPGConstructor.readEPGList("Globo", 13, tsChecker.getEPGList());
 
-		tsChecker.loadTS("D:\\TSs\\TSS\\SBT-2013-10-28-22h40m44#Programa do Ratinho.ts","SBT");
+		tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2013-10-30-23h49m55s-dvb-t___frequency=623142000-.ts","Record");
+		EPGConstructor.readEPGList("Record", 9, tsChecker.getEPGList());
+
+		tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2013-10-31-00h11m58s-dvb-t___frequency=599142000-#Gabi Quase Proibida.ts","SBT");
 		EPGConstructor.readEPGList("SBT", 2, tsChecker.getEPGList());
 
 		listProgramsByBroadCaster();
