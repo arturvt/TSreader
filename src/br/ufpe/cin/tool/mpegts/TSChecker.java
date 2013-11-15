@@ -19,17 +19,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
-import br.ufpe.cin.tool.db.DataBaseManager_working;
 
 public class TSChecker {
 
-    private static TSChecker instance = null;
+//    private static TSChecker instance = null;
     
     private String fileName;
-    private String operator;
+//    private String operator;
     private long fileLength;
     private int packetSize;
     private String pidsString = new String();
@@ -37,55 +34,61 @@ public class TSChecker {
     
     private TSParser tsParser = null;
     
-    private TSChecker() {
+    public TSChecker() {
     	super();
     }
 
-    public static TSChecker getInstance(){
-        if (instance == null) {
-            instance = new TSChecker();
-        }
-        return instance;
-    }
+    
+//    public static TSChecker getInstance(){
+//        if (instance == null) {
+//            instance = new TSChecker();
+//        }
+//        return instance;
+//    }
     
     public ArrayList<EPGValues> getEPGList() {
-    	return this.tsParser.getEITList();
-    }
-    
-    public void insertValuuesInDB() {
-    	ArrayList<EPGValues> epgList = tsParser.getEITList();
-    	if (epgList != null) {
-    		for (EPGValues epg:epgList) {
-    			String epgValue = String.format(
-    					"CountryCode: %s - Operator: %s - Name: %s - "
-    					+ "OriginalID: %d - ShotDescriptor: %s "
-    					+ "StartDate: %s - Starttime: %s - Duration: %s", 
-    					epg.getContryCode(),
-    					this.operator,
-    					epg.getName(),
-    					epg.getOriginalNetworkID(),
-    					epg.getShortDescrition(),
-    					epg.getStartDate(),
-    					epg.getStartTime(),
-    					epg.getDurationTime());
-    			
-    			System.out.println(epgValue);
-				try {
-					DataBaseManager_working.insertEPGvalue(
-							epg.getContryCode(),epg.getStartDate(), epg.getStartTime(), epg.getDurationTime(), operator, epg.getName(), epg.getShortDescrition());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    		tsParser.getEITList().clear();
+    	if (this.tsParser != null) {
+    	   	return this.tsParser.getEITList();
     	}
+    	return null;
     }
     
-    public void loadTS (String tsName, String operator) {
-        File file = new File(tsName);
+//    public void insertValuuesInDB() {
+//    	ArrayList<EPGValues> epgList = tsParser.getEITList();
+//    	if (epgList != null) {
+//    		for (EPGValues epg:epgList) {
+//    			String epgValue = String.format(
+//    					"CountryCode: %s - Operator: %s - Name: %s - "
+//    					+ "OriginalID: %d - ShotDescriptor: %s "
+//    					+ "StartDate: %s - Starttime: %s - Duration: %s", 
+//    					epg.getContryCode(),
+//    					this.operator,
+//    					epg.getName(),
+//    					epg.getOriginalNetworkID(),
+//    					epg.getShortDescrition(),
+//    					epg.getStartDate(),
+//    					epg.getStartTime(),
+//    					epg.getDurationTime());
+//    			
+//    			System.out.println(epgValue);
+//				try {
+//					DataBaseManager_working.insertEPGvalue(
+//							epg.getContryCode(),epg.getStartDate(), epg.getStartTime(), epg.getDurationTime(), operator, epg.getName(), epg.getShortDescrition());
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//    		}
+//    		tsParser.getEITList().clear();
+//    	}
+//    }
+    
+    public void clearEIT() {
+    	tsParser.getEITList().clear();
+    }
+    public boolean loadTS (File file) {
         this.fileName = file.getName();
-        this.operator = operator;
+//        this.operator = operator;
     	
         try {
         	System.out.println("Gathering TS INFORMATION of "+ file.getName());
@@ -94,21 +97,19 @@ public class TSChecker {
         	
         	if ( this.packetSize == -1) {
     			System.out.println( "Problem with TS type");
+    			return false;
         	} else {
-        	
         		System.out.println( "Please wait... ");
-        		
     			tsParser = new TSParser(file, this.packetSize);
-    			
     			tsParser.startReadTS();
-    			
-    			
+    			return true;
         	}
 		} catch (FileNotFoundException e) {
 			System.out.println( "File not found. Msg:"+e.getMessage());
 		} catch (IOException e) {
 			System.out.println( "IO Exception. Msg:"+e.getMessage());
 		}
+        return false;
     }
 
     private int checkTSType(BufferedInputStream bufferInput) throws IOException {

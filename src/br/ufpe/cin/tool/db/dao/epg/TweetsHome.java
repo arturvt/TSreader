@@ -1,23 +1,27 @@
-package br.ufpe.cin.tool.db.dao;
+package br.ufpe.cin.tool.db.dao.epg;
 
 // Generated Oct 29, 2013 11:09:50 AM by Hibernate Tools 4.0.0
 
 import java.util.List;
+
 import javax.naming.InitialContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
+
+import br.ufpe.cin.tool.db.entities.Tweets;
 import static org.hibernate.criterion.Example.create;
 
 /**
- * Home object for domain model class Epg.
- * @see br.ufpe.cin.tool.db.dao.Epg
+ * Home object for domain model class Tweets.
+ * @see br.ufpe.cin.tool.db.entities.Tweets
  * @author Hibernate Tools
  */
-public class EpgHome {
+public class TweetsHome {
 
-	private static final Log log = LogFactory.getLog(EpgHome.class);
+	private static final Log log = LogFactory.getLog(TweetsHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -32,8 +36,8 @@ public class EpgHome {
 		}
 	}
 
-	public void persist(Epg transientInstance) {
-		log.debug("persisting Epg instance");
+	public void persist(Tweets transientInstance) {
+		log.debug("persisting Tweets instance");
 		try {
 			sessionFactory.getCurrentSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -43,8 +47,8 @@ public class EpgHome {
 		}
 	}
 
-	public void attachDirty(Epg instance) {
-		log.debug("attaching dirty Epg instance");
+	public void attachDirty(Tweets instance) {
+		log.debug("attaching dirty Tweets instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -54,8 +58,8 @@ public class EpgHome {
 		}
 	}
 
-	public void attachClean(Epg instance) {
-		log.debug("attaching clean Epg instance");
+	public void attachClean(Tweets instance) {
+		log.debug("attaching clean Tweets instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -65,8 +69,8 @@ public class EpgHome {
 		}
 	}
 
-	public void delete(Epg persistentInstance) {
-		log.debug("deleting Epg instance");
+	public void delete(Tweets persistentInstance) {
+		log.debug("deleting Tweets instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -76,10 +80,10 @@ public class EpgHome {
 		}
 	}
 
-	public Epg merge(Epg detachedInstance) {
-		log.debug("merging Epg instance");
+	public Tweets merge(Tweets detachedInstance) {
+		log.debug("merging Tweets instance");
 		try {
-			Epg result = (Epg) sessionFactory.getCurrentSession().merge(
+			Tweets result = (Tweets) sessionFactory.getCurrentSession().merge(
 					detachedInstance);
 			log.debug("merge successful");
 			return result;
@@ -89,11 +93,11 @@ public class EpgHome {
 		}
 	}
 
-	public Epg findById(int id) {
-		log.debug("getting Epg instance with id: " + id);
+	public Tweets findById(int id) {
+		log.debug("getting Tweets instance with id: " + id);
 		try {
-			Epg instance = (Epg) sessionFactory.getCurrentSession().get(
-					"br.ufpe.cin.tool.db.dao.Epg", id);
+			Tweets instance = (Tweets) sessionFactory.getCurrentSession().get(
+					"br.ufpe.cin.tool.db.dao.Tweets", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,11 +110,12 @@ public class EpgHome {
 		}
 	}
 
-	public List<Epg> findByExample(Epg instance) {
-		log.debug("finding Epg instance by example");
+	public List<Tweets> findByExample(Tweets instance) {
+		log.debug("finding Tweets instance by example");
 		try {
-			List<Epg> results = (List<Epg>) sessionFactory.getCurrentSession()
-					.createCriteria("br.ufpe.cin.tool.db.dao.Epg")
+			List<Tweets> results = (List<Tweets>) sessionFactory
+					.getCurrentSession()
+					.createCriteria("br.ufpe.cin.tool.db.dao.Tweets")
 					.add(create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());

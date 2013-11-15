@@ -3,7 +3,7 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 29, 2013 10:54:13 AM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
- <class name="br.ufpe.cin.tool.db.dao.Terms" schema="public" table="terms">
+ <class name="br.ufpe.cin.tool.db.entities.Terms" schema="public" table="terms">
   <id name="id" type="int">
    <column name="id" not-null="true" unique="true" unique-key="id"/>
    <generator class="increment"/>

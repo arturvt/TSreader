@@ -3,12 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 30, 2013 5:03:56 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="br.ufpe.cin.tool.db.dao.EpgEvent" table="epg_event" schema="public">
+    <class name="br.ufpe.cin.tool.db.entities.EpgEvent" table="epg_event" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="increment" />
         </id>
-        <many-to-one name="program" class="br.ufpe.cin.tool.db.dao.Program" fetch="select">
+        <many-to-one name="program" class="br.ufpe.cin.tool.db.entities.Program" fetch="select">
             <column name="program" not-null="true" />
         </many-to-one>
         <property name="descriptor" type="string">

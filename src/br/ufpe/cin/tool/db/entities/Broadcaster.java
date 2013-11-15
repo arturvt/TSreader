@@ -1,4 +1,4 @@
-package br.ufpe.cin.tool.db.dao;
+package br.ufpe.cin.tool.db.entities;
 
 // Generated Oct 29, 2013 11:09:49 AM by Hibernate Tools 4.0.0
 
@@ -14,7 +14,7 @@ public class Broadcaster implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int id = 0;
+	private int id;
 	private String name;
 	private Integer channel;
 	private String country;
@@ -28,9 +28,9 @@ public class Broadcaster implements java.io.Serializable {
 //		this.id = id;
 //	}
 
-	public Broadcaster(String name, Integer channel, String country,
+	public Broadcaster(int id, String name, Integer channel, String country,
 			String language, Set<Program> programs) {
-//		this.id = id;
+		this.id = id;
 		this.name = name;
 		this.channel = channel;
 		this.country = country;

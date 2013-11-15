@@ -13,11 +13,13 @@
         <property name="show_sql">false</property>
         <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
         <property name="hibernate.current_session_context_class">thread</property>
-        
-        <mapping resource="mappings/Program.hbm.xml"/>
+
+        <mapping resource="mappings/AssociatedContext.hbm.xml"/>
         <mapping resource="mappings/Broadcaster.hbm.xml"/>
         <mapping resource="mappings/Epg.hbm.xml"/>
         <mapping resource="mappings/EpgEvent.hbm.xml"/>
+        <mapping resource="mappings/Hashtags.hbm.xml"/>
+        <mapping resource="mappings/Program.hbm.xml"/>
         <mapping resource="mappings/Terms.hbm.xml"/>
         <mapping resource="mappings/Tweets.hbm.xml"/>
                

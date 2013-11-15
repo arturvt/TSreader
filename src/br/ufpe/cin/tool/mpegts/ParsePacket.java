@@ -903,17 +903,21 @@ public class ParsePacket {
 					// indicativa) Ver Figura 37
 			 int n = descriptor_length/4;
 			 for (int j = 0; j < n; j++) {
-				 int indexOfContryCode = i;
-				 getEPGByID(id).setContryCode(bufferToString(packet, i, 3)); // Country Code 24 Bits or 3 bytes
-				 i+=3;
-	
-				 int conteudo = packet[i] >> 4;
-				 int idade = packet[i] & 0xf;
-				 int currentValue = getNewDoubleIntValueAsHex(conteudo, idade);
-				 
-				 getEPGByID(id).setRatingHex(packet[i]);
-				 
-				 i++;
+//				 int indexOfContryCode = i;
+					 try {
+					 getEPGByID(id).setContryCode(bufferToString(packet, i, 3)); // Country Code 24 Bits or 3 bytes
+					 i+=3;
+		
+	//				 int conteudo = packet[i] >> 4;
+	//				 int idade = packet[i] & 0xf;
+	//				 int currentValue = getNewDoubleIntValueAsHex(conteudo, idade);
+					 
+					 getEPGByID(id).setRatingHex(packet[i]);
+					 
+					 i++;
+				 } catch (NullPointerException e) {
+					 System.out.println("Skipping parental rating. EPG with problem... ");
+				 }
 			}
 			break;
 		case 0x58: // Local time offset descriptor (descritor de diferença de

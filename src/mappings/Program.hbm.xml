@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Oct 30, 2013 5:03:56 PM by Hibernate Tools 4.0.0 -->
+<!-- Generated Oct 31, 2013 7:37:01 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="br.ufpe.cin.tool.db.dao.Program" table="program" schema="public">
-        <id name="id" type="int">
-            <column name="id" />
+    <class name="br.ufpe.cin.tool.db.entities.Program" table="program" schema="public">
+        <id name="programId" type="int">
+            <column name="program_id" />
             <generator class="increment" />
         </id>
-        <many-to-one name="broadcaster" class="br.ufpe.cin.tool.db.dao.Broadcaster" fetch="select">
+        <many-to-one name="broadcaster" class="br.ufpe.cin.tool.db.entities.Broadcaster" fetch="select">
             <column name="broadcaster" not-null="true" />
         </many-to-one>
         <property name="name" type="string">
@@ -18,7 +18,8 @@
             <key>
                 <column name="program" not-null="true" />
             </key>
-            <one-to-many class="br.ufpe.cin.tool.db.dao.EpgEvent" />
+            <one-to-many class="br.ufpe.cin.tool.db.entities.EpgEvent" />
         </set>
+        <one-to-one name="associatedContext" class="br.ufpe.cin.tool.db.entities.AssociatedContext"></one-to-one>
     </class>
 </hibernate-mapping>

@@ -3,7 +3,7 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 29, 2013 10:54:13 AM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
- <class name="br.ufpe.cin.tool.db.dao.Tweets" schema="public" table="tweets">
+ <class name="br.ufpe.cin.tool.db.entities.Tweets" schema="public" table="tweets">
   <id name="id" type="int">
    <column name="id"/>
    <generator class="increment"/>

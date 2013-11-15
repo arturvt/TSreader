@@ -1,4 +1,4 @@
-package br.ufpe.cin.tool.db.dao;
+package br.ufpe.cin.tool.db.entities;
 
 
 // Generated Oct 30, 2013 5:03:56 PM by Hibernate Tools 4.0.0

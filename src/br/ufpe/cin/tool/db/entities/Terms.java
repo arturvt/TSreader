@@ -1,4 +1,4 @@
-package br.ufpe.cin.tool.db.dao;
+package br.ufpe.cin.tool.db.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
