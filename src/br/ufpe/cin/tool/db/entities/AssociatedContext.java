@@ -17,7 +17,7 @@ public class AssociatedContext implements java.io.Serializable {
 	private int programId;
 	private Program program;
 	private String userTwitter;
-	private Set<Hashtags> hashtagses = new HashSet<Hashtags>(0);
+	private Set<Hashtags> hashtags = new HashSet<Hashtags>(0);
 
 	public AssociatedContext() {
 	}
@@ -30,7 +30,7 @@ public class AssociatedContext implements java.io.Serializable {
 			Set<Hashtags> hashtagses) {
 		this.program = program;
 		this.userTwitter = userTwitter;
-		this.hashtagses = hashtagses;
+		this.hashtags = hashtagses;
 	}
 
 	public int getProgramId() {
@@ -58,11 +58,11 @@ public class AssociatedContext implements java.io.Serializable {
 	}
 
 	public Set<Hashtags> getHashtagses() {
-		return this.hashtagses;
+		return this.hashtags;
 	}
 
 	public void setHashtagses(Set<Hashtags> hashtagses) {
-		this.hashtagses = hashtagses;
+		this.hashtags = hashtagses;
 	}
 
 }

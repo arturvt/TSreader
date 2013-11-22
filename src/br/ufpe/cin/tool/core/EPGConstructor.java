@@ -33,8 +33,7 @@ public class EPGConstructor {
 				Broadcaster broadCaster = null;
 				broadCaster = facade.getBroadCaster(operador);
 				if (broadCaster == null) {
-					broadCaster = new Broadcaster(0, operador, channelNumber,
-							item.getContryCode(), "port", null);
+					broadCaster = new Broadcaster(0, operador, channelNumber, item.getContryCode(), "port", null);
 					facade.saveOrUpdate(broadCaster);
 				}
 				Program program = facade.getProgram(item.getName());
@@ -49,19 +48,17 @@ public class EPGConstructor {
 					programsSkippeds++;
 				}
 	
-				EpgEvent event = facade.getEPGEvent(item.getStartDate(),
-						item.getStartTime(), operador);
+				EpgEvent event = facade.getEPGEvent(item.getStartDate(), item.getStartTime(), operador);
 				if (event == null) {
 					event = new EpgEvent(program, item.getShortDescrition(),
 							item.getStartDate(), item.getStartTime(),
 							item.getDurationTime());
 					facade.saveOrUpdate(event);
 				} else {
-					programsSkippeds++;
+					eventsSkippeds++;
 				}
 				if (newTransaction) {
 					facade.commit();
-					System.out.println("Commited!");
 					newTransaction = false;
 				}
 			} catch (Exception e) {
@@ -71,11 +68,9 @@ public class EPGConstructor {
 				e.printStackTrace();
 			}
 		}
-		if (programsSkippeds != 0) {
-			System.out.println("Skipped: " + programsSkippeds + " programs.");
-		}
-		if (eventsSkippeds != 0) {
-			System.out.println("Skipped: " + eventsSkippeds + " events.");
-		}
+		System.out.println("Skipped: " + programsSkippeds + " programs.");
+		System.out.println("Skipped: " + eventsSkippeds + " events.");
+		eventsSkippeds = 0;
+		programsSkippeds = 0;
 	}
 }
