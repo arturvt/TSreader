@@ -122,9 +122,8 @@ public class TSChecker {
     	try {
 			bufferInput.read(buffer);
 	        for (int i = 0; i < buffer.length; i++) {
-	            if ((buffer[i] == TSParser.SYNC_BYTE)) {
+	            if ((buffer[i] == TSParser.SYNC_BYTE)) {  // Byte de sincronia = 0x47]
 	            	ocorrences = i;
-//	            	System.out.println(i);
 	            }
 	        }
 	        if (ocorrences % 188 == 0) {

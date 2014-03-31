@@ -96,6 +96,8 @@ public class TSParser {
 			parsePacket(buffer);
 			byteCount+=buffer.length;
 		}
+//		System.out.println("Audio: "+parser.audioPackets);
+//		System.out.println("Video: "+parser.videoPackets);
 	}
 	
 	private void colectPids(byte[] content) {

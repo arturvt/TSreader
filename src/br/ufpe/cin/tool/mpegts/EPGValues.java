@@ -13,8 +13,8 @@ public class EPGValues {
 	private String shortDescrition;
 	private int parentalRating = -1;
 	private int parentalRatingDescription = -1;
-	private int nibble_1 = -1;
-	private int nibble_2 = -1;
+//	private int nibble_1 = -1;
+//	private int nibble_2 = -1;
 	private int user_byte = -1;
 	private int ratingHex = 0x0;
 	private String contryCode;
@@ -168,25 +168,25 @@ public class EPGValues {
 		this.user_byte = userHex & 0xff;
 	}
 
-	public void setNibble(int nibbleHex) {
-		int nibble_1 = nibbleHex >> 4;
-		int nibble_2 = nibbleHex & 0xf;
-		this.nibble_1 = nibble_1;
-		this.nibble_2 = nibble_2;
-		
-	}
+//	public void setNibble(int nibbleHex) {
+//		int nibble_1 = nibbleHex >> 4;
+//		int nibble_2 = nibbleHex & 0xf;
+//		this.nibble_1 = nibble_1;
+//		this.nibble_2 = nibble_2;
+//		
+//	}
 
-	public int getNibble_1() {
-		return nibble_1;
-	}
-
-	public void setNibble_2(int nibble_2) {
-		this.nibble_2 = nibble_2;
-	}
-
-	public int getNibble_2() {
-		return nibble_2;
-	}
+//	public int getNibble_1() {
+//		return nibble_1;
+//	}
+//
+//	public void setNibble_2(int nibble_2) {
+//		this.nibble_2 = nibble_2;
+//	}
+//
+//	public int getNibble_2() {
+//		return nibble_2;
+//	}
 
 	public int getUser_Byte() {
 		return user_byte;

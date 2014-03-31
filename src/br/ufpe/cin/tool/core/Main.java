@@ -101,7 +101,7 @@ public class Main {
 
 	private static void fillData(String places[]) {
 		for (String place:places) {
-			System.out.println("Reading " + place);
+			System.out.println("Lendo: " + place);
 			try {
 				readTS("D:\\TSs\\TSS" + File.separator + place);
 			} catch (InterruptedException e) {
@@ -111,20 +111,25 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Starting app");
-		listProgramsByBroadCaster();
-		 
-//		String places[] = {"Sorocaba", "Rio de Janeiro", "Recife"};
-//		fillData(places);
+		System.out.println("Iniciando EPG READER");
+		if (args.length > 0) {
+			String places[] = args;
+			fillData(places);
+			listProgramsByBroadCaster();
+		} else {
+			System.out.println("É preciso inserir as cidades em que se deseja ler os TSs.");
+		}
 		
-		 insertHashTags("MAIS VOCÊ", "#MaisVoce, #AnaMariaBraga, #AnaMaria, #LoiroJose" );
-		 insertHashTags("ENCONTRO COM FÁTIMA BERNARDES","#encontro, #encontrofatima, #fatimabernardes");
+		
+		
+//		 insertHashTags("MAIS VOCÊ", "#MaisVoce, #AnaMariaBraga, #AnaMaria, #LoiroJose" );
+//		 insertHashTags("ENCONTRO COM FÁTIMA BERNARDES","#encontro, #encontrofatima, #fatimabernardes");
 		// insertHashTags("BEM ESTAR", "#bemestar");
 		// fillAssociatedEvents();
-		// TSChecker tsChecker = TSChecker.getInstance();
+		 TSChecker tsChecker = new TSChecker();
 
-		// tsChecker.loadTS("D:\\TSs\\TSS\\Globo-2013-10-28-23h29m49s-Tela Quente.ts","Globo");
-		// EPGConstructor.readEPGList("Globo", 13, tsChecker.getEPGList());
+		 tsChecker.loadTS(new File("D:\\TSs\\TSS\\Recife\\Globo\\Globo-2013-10-28-23h29m49s-Tela Quente.ts"));
+		 EPGConstructor.readEPGList("Globo", 13, tsChecker.getEPGList());
 		// tsChecker.clearEIT();
 		// Thread.sleep(5000);
 		// tsChecker.loadTS("D:\\TSs\\TSS\\vlc-record-2013-10-30-23h44m21s-dvb-t___frequency=605143000-Programa do Jo.ts","Globo");

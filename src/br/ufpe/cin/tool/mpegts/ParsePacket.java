@@ -47,11 +47,14 @@ public class ParsePacket {
 	private PSITable aitOneSeg = new PSITable(0x01fc, "AIT-O"); // 508
 	private PSITable aitFullSeg = new PSITable(0x01f4, "AIT-F"); // 500
 	
-	private final static int DSMCC_ONE_SEG = 0x38c;	// 908
-	private final static int DSMCC_FULL_SEG = 0x384;// 900
+//	private final static int DSMCC_ONE_SEG = 0x38c;	// 908
+//	private final static int DSMCC_FULL_SEG = 0x384;// 900
 	
 	private boolean isBigPacket = false;
 	private ArrayList<EPGValues> eitlList = new ArrayList<EPGValues>();
+	
+//	public double videoPackets=0;
+//	public double audioPackets=0;
 	
 	private Hashtable<Integer, Integer> PIDs = new Hashtable<Integer, Integer>();
 	private Hashtable<Integer, String> PIDsDescriptions = new Hashtable<Integer, String>();
@@ -69,7 +72,7 @@ public class ParsePacket {
 	// STD-B10
 	// Pag82
 	private static final int PACKET_HEADER_SIZE = 4;
-	private String networkName;
+//	private String networkName;
 	
 	private PSITable table = null;
 
@@ -159,7 +162,6 @@ public class ParsePacket {
 										 */;
 				table.sectionLength -= 4 /* crc */;
 				table.sectionEnd = table.i + table.sectionLength;
-				int previousCRC = CRC32.calc(table.fullTable, table.dataStart, table.sectionEnd - table.dataStart);
 				table.crcCheck = CRC32.calc(table.fullTable, table.dataStart,
 						table.sectionEnd - table.dataStart + 4) == 0;
 				if (table.crcCheck) {
@@ -181,13 +183,6 @@ public class ParsePacket {
 						table.offset = 0;
 					}
 					
-					if (changed) {
-						// Compares the previous CRC (before the changes) and the new one. If they are different, then make a change
-						int crc32_Atual = CRC32.calc(table.fullTable, table.dataStart, table.sectionEnd - table.dataStart);
-						if (crc32_Atual != previousCRC) {
-							this.setNewCRC32(crc32_Atual, table.i);
-						}
-					}
 				}
 			}
 		} else {
@@ -278,15 +273,19 @@ public class ParsePacket {
 			switch (streamType) {
 			case 0x01:
 				description = "Vídeo conforme ISO/IEC 11172-2";
+				System.out.println("Video");
 				break;
 			case 0x02:
 				description = "Vídeo conforme ITU Recommendation H.262";
+				System.out.println("Video h262");
 				break;
 			case 0x03:
 				description = "??udio conforme ISO/IEC 11172-3";
+				System.out.println("Audio");
 				break;
 			case 0x04:
 				description = "??udio conforme ISO/IEC 13818-3";
+				System.out.println("Audio");
 				break;
 			case 0x05:
 				description = "ITU-T Rec. H.222.0|ISO/IEC 13818-1 private_sections";
@@ -327,6 +326,7 @@ public class ParsePacket {
 				break;
 			case 0x11:
 				description = "??udio conforme ISO/IEC 14496-3";
+//				audioPackets++;
 				break;
 			case 0x12:
 				description = "Fluxo de pacotes SL ou fluxo FlexMux transportada nos pacotes de PES conforme ISO/IEC 14496-1";
@@ -357,6 +357,7 @@ public class ParsePacket {
 				break;
 			case 0x1B:
 				description = "Video H.264 / ISO 14496-10";
+//				videoPackets++;
 				break;
 			case 0x7E:
 				description = "Data pipe";
@@ -494,30 +495,30 @@ public class ParsePacket {
 		// Para M = 1 ou M = 2, L = 1. Em outros casos, L = 0.
 	}
 	
-	private int convertDatetoMJD(String date) {
-		int value = -1;
-		// Considering that the correctly format is DD/MM/AAAA
-		int Y = -1;
-		int M = -1;
-		int D = -1;
-		int L = 0;
-		
-		D = Integer.valueOf((date.substring(0, date.indexOf('/'))));
-		date = date.substring(date.indexOf('/')+1,date.length());
-
-		M = Integer.valueOf((date.substring(0, date.indexOf('/'))));
-		date = date.substring(date.indexOf('/')+1,date.length());
-
-		Y = Integer.valueOf(date) - 1900;
-		
-		if (M == 1 || M == 2) {
-			L = 1;
-		}
-		
-		value = (int) (14956 + D +  Math.floor((Y - L) * 365.25) + Math.floor((M + 1 + L * 12) * 30.6001));
-		return value;
-		
-	}
+//	private int convertDatetoMJD(String date) {
+//		int value = -1;
+//		// Considering that the correctly format is DD/MM/AAAA
+//		int Y = -1;
+//		int M = -1;
+//		int D = -1;
+//		int L = 0;
+//		
+//		D = Integer.valueOf((date.substring(0, date.indexOf('/'))));
+//		date = date.substring(date.indexOf('/')+1,date.length());
+//
+//		M = Integer.valueOf((date.substring(0, date.indexOf('/'))));
+//		date = date.substring(date.indexOf('/')+1,date.length());
+//
+//		Y = Integer.valueOf(date) - 1900;
+//		
+//		if (M == 1 || M == 2) {
+//			L = 1;
+//		}
+//		
+//		value = (int) (14956 + D +  Math.floor((Y - L) * 365.25) + Math.floor((M + 1 + L * 12) * 30.6001));
+//		return value;
+//		
+//	}
 	
 	private String getTime(byte buffer[], int position) {
 		StringBuffer date = new StringBuffer();
@@ -535,71 +536,53 @@ public class ParsePacket {
 		return date.toString();
 	}
 	
-	private int[] convertTimeToInt(String date) {
-		//Format 12:35:00
-		int[] arrayNumbers = new int[3]; // HH:MM:SS - 3 bytes
-		
-		String Htmp = date.substring(0,date.indexOf(':'));
-		date = date.substring(date.indexOf(':')+1,date.length());
-		String Mtmp = date.substring(0,date.indexOf(':'));
-		date = date.substring(date.indexOf(':')+1,date.length());
-		String Stmp = date.substring(0,date.length());
-		
-		int H = Integer.valueOf(Htmp, 16).intValue();
-		int M = Integer.valueOf(Mtmp, 16).intValue();
-		int S = Integer.valueOf(Stmp, 16).intValue();
-		
-		arrayNumbers[0] = H;
-		arrayNumbers[1] =  M;
-		arrayNumbers[2] = S;
-		return arrayNumbers;
-	}
-	
-	private void parseEIT(PSITable table) {
-		int transportStreamID = ((table.fullTable[table.i++] & 0xff) << 8) // 2
-																			// bytes
-																			// uimsbf
-				| (table.fullTable[table.i++] & 0xff);
-		int originalNetworkID = ((table.fullTable[table.i++] & 0xff) << 8) // 2
-																			// bytes
-																			// uimsbf
-				| (table.fullTable[table.i++] & 0xff);
+//	private int[] convertTimeToInt(String date) {
+//		//Format 12:35:00
+//		int[] arrayNumbers = new int[3]; // HH:MM:SS - 3 bytes
+//		
+//		String Htmp = date.substring(0,date.indexOf(':'));
+//		date = date.substring(date.indexOf(':')+1,date.length());
+//		String Mtmp = date.substring(0,date.indexOf(':'));
+//		date = date.substring(date.indexOf(':')+1,date.length());
+//		String Stmp = date.substring(0,date.length());
+//		
+//		int H = Integer.valueOf(Htmp, 16).intValue();
+//		int M = Integer.valueOf(Mtmp, 16).intValue();
+//		int S = Integer.valueOf(Stmp, 16).intValue();
+//		
+//		arrayNumbers[0] = H;
+//		arrayNumbers[1] =  M;
+//		arrayNumbers[2] = S;
+//		return arrayNumbers;
+//	}
 
-		table.i++; /* segment_last_section_number */
-		table.i++; /* last_table_id */
-		while (table.i < table.sectionEnd) {
-			int event_id = ((table.fullTable[table.i++] & 0xff) << 8)
-					| (table.fullTable[table.i++] & 0xff);
-			
-//			if (table.pid == eitL.pid) {
-				int startI = table.i;
-				EPGValues epgTemp = new EPGValues(event_id, transportStreamID, originalNetworkID);
-				epgTemp.setStartDate(convertMJDtoDate(table.fullTable, table.i));// StartTime - MJD
-				table.i+=2;
-				epgTemp.setStartTime(getTime(table.fullTable, table.i));//StartTime - Hour
-				table.i+=3;
-				epgTemp.setDurationTime(getTime(table.fullTable, table.i));//DurationTime
-				table.i+=3;
-				int running_status = ((table.fullTable[table.i] >> 5) & 0x7);// 3bits para running status
-				epgTemp.setRunningStatus(running_status);
-				
-				addEPGToList(epgTemp);
-				
-//			} else {
-//				table.i += 5; // StartTime
-//				table.i += 3; // duration
-//				System.out.println("NOt!");
-//
-//			}
+private void parseEIT(PSITable table) {
+	int transportStreamID = ((table.fullTable[table.i++] & 0xff) << 8) // 2 bytes uimsbf
+			| (table.fullTable[table.i++] & 0xff);
+	int originalNetworkID = ((table.fullTable[table.i++] & 0xff) << 8) // 2 bytes uimsbf
+			| (table.fullTable[table.i++] & 0xff);
 
-			int descriptorsLoopLength = ((table.fullTable[table.i++] << 8) & 0xf00)
-					| (table.fullTable[table.i++] & 0xff);
-			int descriptorsLoopEnd = table.i + descriptorsLoopLength;
-			while (table.i < descriptorsLoopEnd) {
-				table.i += parseDescriptor(table.pid,event_id, table.fullTable, table.i);
-			}
+	table.i++; /* segment_last_section_number */
+	table.i++; /* last_table_id */
+	while (table.i < table.sectionEnd) {
+		int event_id = ((table.fullTable[table.i++] & 0xff) << 8) | (table.fullTable[table.i++] & 0xff);
+		EPGValues epgTemp = new EPGValues(event_id, transportStreamID, originalNetworkID);
+		epgTemp.setStartDate(convertMJDtoDate(table.fullTable, table.i));// StartTime - MJD
+		table.i+=2;
+		epgTemp.setStartTime(getTime(table.fullTable, table.i));//StartTime - Hour
+		table.i+=3;
+		epgTemp.setDurationTime(getTime(table.fullTable, table.i));//DurationTime
+		table.i+=3;
+		int running_status = ((table.fullTable[table.i] >> 5) & 0x7);// 3bits para running status
+		epgTemp.setRunningStatus(running_status);
+		addEPGToList(epgTemp); // ADDS THE EVENT TO THE EPG
+		int descriptorsLoopLength = ((table.fullTable[table.i++] << 8) & 0xf00) | (table.fullTable[table.i++] & 0xff);
+		int descriptorsLoopEnd = table.i + descriptorsLoopLength;
+		while (table.i < descriptorsLoopEnd) {
+			table.i += parseDescriptor(table.pid,event_id, table.fullTable, table.i);
 		}
 	}
+}
 
 	private int parseDescriptor(int pid, int id, byte[] packet, int position) {
 		// http://www.arib.or.jp/english/html/overview/doc/6-STD-B10v4_6-E2.pdf
@@ -625,12 +608,12 @@ public class ParsePacket {
 		case 0x14: // Association tag descriptor (descritor de associação de
 					// tag) Ver ISO/IEC 13818-6
 			int associationTag = ((packet[i++] & 0xff) << 8) | (packet[i++] & 0xff);
-			if (pid == DSMCC_FULL_SEG) {
-				System.out.println("AssociationTagFullSeg: " + associationTag);
-			} 
-			if (pid == DSMCC_ONE_SEG) {
-				System.out.println("AssociationTagOneSeg: " + associationTag);
-			}
+//			if (pid == DSMCC_FULL_SEG) {
+//				System.out.println("AssociationTagFullSeg: " + associationTag);
+//			} 
+//			if (pid == DSMCC_ONE_SEG) {
+//				System.out.println("AssociationTagOneSeg: " + associationTag);
+//			}
 			break;
 		case 0x15: // Deferred association tags descriptor (descritor de
 					// informação de associação estendida) Ver ISO/IEC 13818-6
@@ -647,7 +630,7 @@ public class ParsePacket {
 			if (descriptor_length > 20) {
 				System.out.println("Wrong network name descriptor");
 			}
-			networkName = bufferToString(packet, i, descriptor_length);
+//			networkName = bufferToString(packet, i, descriptor_length);
 			break;
 		case 0x41: // Service list descriptor (descritor da lista de serviços)
 					// Ver Figura 21
@@ -881,7 +864,7 @@ public class ParsePacket {
 					// Do nothing, defaul value is 0 in this case
 				}
 				
-				getEPGByID(id).setNibble(packet[j]);
+//				getEPGByID(id).setNibble(packet[j]);
 				
 				j++;
 				
